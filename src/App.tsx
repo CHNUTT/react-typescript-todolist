@@ -1,26 +1,64 @@
-import React from 'react';
-import logo from './logo.svg';
+import { ChangeEvent, FC, useState } from 'react';
+import { ITask } from './interfaces';
+import TodoTask from './components/TodoTask';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App: FC = () => {
+	const [task, setTask] = useState<string>('');
+	const [deadline, setDeadline] = useState<number>(0);
+	const [todoList, setTodoList] = useState<ITask[]>([]);
+
+	const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
+		if (e.target.name === 'task') {
+			setTask(e.target.value);
+			return;
+		}
+		setDeadline(+e.target.value);
+	};
+
+	const addTask = (): void => {
+		if (!task || deadline < 0) return;
+		const newTask: ITask = {
+			taskName: task,
+			deadline: deadline,
+		};
+		setTodoList([...todoList, newTask]);
+		setTask('');
+		setDeadline(0);
+	};
+
+	const deleteTask = (taskNameToDelete: string): void => {
+		setTodoList(todoList.filter((task) => task.taskName !== taskNameToDelete));
+	};
+
+	return (
+		<div className='App'>
+			<div className='header'>
+				<div className='inputContainer'>
+					<input
+						name='task'
+						type='text'
+						placeholder='Task...'
+						value={task}
+						onChange={handleChange}
+					/>
+					<input
+						name='deadLine'
+						type='number'
+						placeholder='Deadline (in Days)...'
+						value={deadline}
+						onChange={handleChange}
+					/>
+				</div>
+				<button onClick={addTask}>Add Task</button>
+			</div>
+			<div className='todoList'>
+				{todoList.map((task, index) => (
+					<TodoTask key={index} task={task} deleteTask={deleteTask}/>
+				))}
+			</div>
+		</div>
+	);
+};
 
 export default App;
