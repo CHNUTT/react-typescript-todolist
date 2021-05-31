@@ -1,5 +1,6 @@
 import { ChangeEvent, FC, useState } from 'react';
 import { ITask } from './interfaces';
+import TodoTask from './components/TodoTask';
 import './App.css';
 
 const App: FC = () => {
@@ -16,6 +17,7 @@ const App: FC = () => {
 	};
 
 	const addTask = (): void => {
+		if (!task) return;
 		const newTask: ITask = {
 			taskName: task,
 			deadline: deadline,
@@ -48,9 +50,7 @@ const App: FC = () => {
 			</div>
 			<div className='todoList'>
 				{todoList.map((task, index) => (
-					<div key={index}>
-						{task.taskName}, {task.deadline}
-					</div>
+					<TodoTask key={index} task={task} />
 				))}
 			</div>
 		</div>
