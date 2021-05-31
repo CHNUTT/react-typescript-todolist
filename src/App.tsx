@@ -17,7 +17,7 @@ const App: FC = () => {
 	};
 
 	const addTask = (): void => {
-		if (!task) return;
+		if (!task || deadline < 0) return;
 		const newTask: ITask = {
 			taskName: task,
 			deadline: deadline,
@@ -25,6 +25,10 @@ const App: FC = () => {
 		setTodoList([...todoList, newTask]);
 		setTask('');
 		setDeadline(0);
+	};
+
+	const deleteTask = (taskNameToDelete: string): void => {
+		setTodoList(todoList.filter((task) => task.taskName !== taskNameToDelete));
 	};
 
 	return (
@@ -50,7 +54,7 @@ const App: FC = () => {
 			</div>
 			<div className='todoList'>
 				{todoList.map((task, index) => (
-					<TodoTask key={index} task={task} />
+					<TodoTask key={index} task={task} deleteTask={deleteTask}/>
 				))}
 			</div>
 		</div>

@@ -58,6 +58,7 @@ body {
 
 .task {
 	color: white;
+  margin-top: 20px;
 	width: 500px;
 	height: 50px;
 	display: flex;
