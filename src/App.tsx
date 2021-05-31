@@ -44,9 +44,15 @@ const App: FC = () => {
 						onChange={handleChange}
 					/>
 				</div>
-				<button>Add Task</button>
+				<button onClick={addTask}>Add Task</button>
 			</div>
-			<div className='todoList'></div>
+			<div className='todoList'>
+				{todoList.map((task, index) => (
+					<div key={index}>
+						{task.taskName}, {task.deadline}
+					</div>
+				))}
+			</div>
 		</div>
 	);
 };
